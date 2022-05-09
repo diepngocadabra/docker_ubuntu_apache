@@ -38,6 +38,7 @@ RUN mkdir -p /var/www/html/${SOURCE_NAME} && \
     chown -R www-data.www-data /var/www/html/${SOURCE_NAME} && \
     chmod -R 755 /var/www/html/${SOURCE_NAME}
 
+RUN apt-get update && apt-get install -y nodejs
 
 EXPOSE 80
 EXPOSE 443
