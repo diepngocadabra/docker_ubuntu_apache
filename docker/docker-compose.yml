@@ -19,10 +19,16 @@ services:
       - ${SOURCE_PATH}:${VOLUME_PATH}
       - ./apache/conf/apache2.conf:/etc/apache2/apache2.conf
       - ./apache/php/php.ini:/usr/local/etc/php/php.ini
-      - ./apache/sites-enable/000-default.conf:/etc/apache2/sites-enable/000-default.conf
-      - ./apache/sites-enable/default-ssl.conf:/etc/apache2/sites-enable/default-ssl.conf
+      - ./conf/vhost.conf:/etc/apache2/sites-enabled/vhost.conf
+      - ./apache/conf/conf-available/letsencrypt.conf:/etc/apache2/conf-available/letsencrypt.conf
+      - ./apache/conf/conf-available/ssl-params.conf:etc/apache2/conf-available/ssl-params.conf
+      - ./apache/conf/sites-available/local.biz_match.com.conf:/etc/apache2/sites-available/local.biz_match.com.conf
     depends_on:
       - mysql
+      - letsencryptstore
+    environment:
+      WEBMASTER_MAIL: "admin@gmail.com"
+      DOMAINS: "local.biz-match.com,www.local.biz-match.com"
   mysql:
     image: mysql:${MYSQL_VERSION}
     command: --default-authentication-plugin=mysql_native_password
@@ -30,4 +36,9 @@ services:
     ports:
       - "3033:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: 123456a@
+  # letsencryptstore:
+  #   image: busybox
+  #   volumes:
+  #     - "/etc/letsencrypt"
+  #     - "/var/lib/letsencrypt"

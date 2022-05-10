@@ -9,25 +9,28 @@ The Docker environment project.
 │
 ├─ apache
 │   ├─ conf
-│   │   └─ apache2.conf
+│   │   ├─ conf-available
+│   │   │   ├─ conf-available
+│   │   │   └─ ssl-params.conf
+│   │   ├─ sites-available
+│   │   │   └─ example.com.conf
+│   │   ├─ sites-enabled
+│   │   │   ├─ 000-default.conf
+│   │   │   └─ default-ssl.conf
+│   │   ├─ apache2.conf
+│   │   └─ vhost.conf
+|   ├─ php
+│   │   └─ php.ini
 │   ├─ ssl
 │   │   ├─ certs
 │   │   │   └─ local.crt
-│   │   ├─ private
-│   │   │    └─ local.key
-│   │   └─ openssl.cnf
+│   │   └─ private
+│   │       └─ local.key
 │   └─ Dockerfile
 ├─ ubuntu
-|   ├─ php
-│   │   └─ local.crt
 │   └─ Dockerfile
 │
-├─ php
-|   ├─ config
-|   ├─ ...
-│   └─ Dockerfile
-│
-├─ .env
+├─ .env.example
 │
 ```
 
@@ -50,7 +53,7 @@ VOLUME_PATH=/var/www/html
 ```
 
 - Application will be mounted to `/var/www/html`
- 
+
 You may modify project paths <SOURCE DIRECTORY> in above directory with your local paths.
 
 Eg:
@@ -119,7 +122,7 @@ composer install
 Show docker images (run on host machine)
 ```bash
 docker ps
-```									
+```
 
 Inspect a container (run on host machine)	</br>
 
