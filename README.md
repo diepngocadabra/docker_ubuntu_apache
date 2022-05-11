@@ -9,16 +9,9 @@ The Docker environment project.
 │
 ├─ apache
 │   ├─ conf
-│   │   ├─ conf-available
-│   │   │   ├─ conf-available
-│   │   │   └─ ssl-params.conf
-│   │   ├─ sites-available
-│   │   │   └─ example.com.conf
 │   │   ├─ sites-enabled
 │   │   │   ├─ 000-default.conf
-│   │   │   └─ default-ssl.conf
 │   │   ├─ apache2.conf
-│   │   └─ vhost.conf
 |   ├─ php
 │   │   └─ php.ini
 │   ├─ ssl
@@ -69,15 +62,25 @@ APP_SSL_PORT=443
 ```
 
 **3. Check configuration of Apache server**
+1/ Directory apache/conf/sites-enabled
+- Change ServerName and DocumentRoot
+Eg:
+```
+  ...
+  ServerName example.com
+  ...
+  DocumentRoot /var/www/html/my_app/public
+  ...
+```
 
-Directory docker\apache\conf\apache2.conf
+2/ Directory apache\conf\apache2.conf
 ```
 ...
 <VirtualHost *:80>
     ...
-    DocumentRoot "/var/www/html/biz_match_app/public"
+    DocumentRoot "/var/www/html/my_app/public"
 
-    <Directory /var/www/html/biz_match_app/public>
+    <Directory /var/www/html/my_app/public>
         ...
     </Directory>
 
@@ -85,8 +88,15 @@ Directory docker\apache\conf\apache2.conf
 </VirtualHost>
 ...
 ```
-Explain
-- DocumentRoot, Directory : the VOLUME_PATH, the project mounted directory + /public
+3/ Directory apache/Dockerfile
+Change SOURCE_NAME, HOSTNAME
+
+```
+...
+ENV SOURCE_NAME=my_app
+ENV HOSTNAME=example.com
+...
+```
 
 **4. Build docker**
 
@@ -102,9 +112,6 @@ docker-compose build
 ```bash
 docker-compose up
 ```
-
-if it's all successed, all the services are running as image below
-![Mount](wiki/docker-desktop.JPG)
 
 **5. Access local site**
 
@@ -166,7 +173,7 @@ Explain
 172.20.0.5 : the configured ip in .env file, specifically it's the value of MYSQL_IPV4_ADDRESS
 
 ## Common errors and how to solve
-1. ERROR: Pool overlaps with other one on this address space
+**1. ERROR: Pool overlaps with other one on this address space**
 ![Mount](wiki/error_pool_overlaps.JPG)
 
 the docker subnet mark is already in use </br>
@@ -178,15 +185,7 @@ docker network ls
 docker network rm NETWORK_NAME
 ```
 
-changing the ip config in .env file.
-```bash
-DOCKER_SUBNET=172.20.0.0/16
-NGINX_IPV4_ADDRESS=172.20.0.2
-PHPFPM_IPV4_ADDRESS=172.20.0.3
-REDIS_IPV4_ADDRESS=172.20.0.4
-MYSQL_IPV4_ADDRESS=172.20.0.5 
-```
-2. ERROR : "max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]"
+**2. ERROR : "max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]"**
 
 Windows with Docker Desktop WSL 2 backend
 
@@ -196,10 +195,5 @@ wsl -d docker-desktop
 sysctl -w vm.max_map_count=262144
 ```
 https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode
-# cadabra_docker
 
-3. SonarQube is under maintenance
-```bash
-You should update the database if you use MySQL or another RDBMS: Visit http://127.0.0.1:9000/setup. 
-After the update finished，visit http://127.0.0.1:9000. It's ok!
 ```
