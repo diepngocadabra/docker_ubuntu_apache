@@ -22,7 +22,7 @@ services:
       - ${SOURCE_PATH}:${VOLUME_PATH}
       - ./apache/conf/apache2.conf:/etc/apache2/apache2.conf
       - ./apache/php/php.ini:/usr/local/etc/php/php.ini
-      - ./apache/conf/conf-available/letsencrypt.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./apache/conf/sites-enabled/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
     depends_on:
       - mysql
     environment:
