@@ -2,12 +2,12 @@ version: '3'
 name: docker_ubuntu
 
 services:
-  ubuntu:
-    container_name: ubuntu
-    build: ./ubuntu
-    working_dir: ${VOLUME_PATH}
-    volumes:
-      - ${SOURCE_PATH}:${VOLUME_PATH}
+  # ubuntu:
+  #   container_name: ubuntu
+  #   build: ./ubuntu
+  #   working_dir: ${VOLUME_PATH}
+  #   volumes:
+  #     - ${SOURCE_PATH}:${VOLUME_PATH}
   apache:
     container_name: apache_server
     restart: always
